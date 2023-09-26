@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+	height: 100vh;
+        }
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+        #dice {
+            margin-top: 20px;
+        }
+
+        #score {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 15%;
+            height: 5%;
+            border-radius: 15px;
+            box-shadow: 5px 5px 7px rgb(105, 184, 170);
+            background: linear-gradient(-45deg,#23a6d5,#e73c7e,#ee7752, #23d5ab );
+            
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+            
+        }
+
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 20% auto;
+            padding: 20px;
+            width: 50%;
+            text-align: center;
+        }
+
+        @keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+    </style>
+</head>
+<body>
+    <h1>Dice Game</h1>
+    <img id="dice" src="dice1.png" alt="Dice" width="100">
+    <div id="score">Score: 0</div>
+    <button id="rollButton">Roll Dice</button>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <p>Congratulations! You've successfully unlocked today's date! 📅</p>
+            <button id="downloadButton">Download</button>
+        </div>
+    </div>
+
+    <script>
+        const diceImages = [
+            "dice1.png",
+            "dice2.png",
+            "dice3.png",
+            "dice4.png",
+            "dice5.png",
+            "dice6.png",
+        ];
+
+        const dice = document.getElementById('dice');
+        const scoreDisplay = document.getElementById('score');
+        const rollButton = document.getElementById('rollButton');
+        const modal = document.getElementById('myModal');
+        const downloadButton = document.getElementById('downloadButton');
+
+        const today = new Date();
+         const day = today.getDate();
+         const month = today.getMonth() + 1;
+
+        let score = 0;
+        let target = day;
+        flag = false;
+
+        rollButton.addEventListener('click', () => {
+            const randomNumber = Math.floor(Math.random() * 6); // Generate a random number between 0 and 5
+            const randomImage = diceImages[randomNumber];
+            dice.src = randomImage;
+            if (score + randomNumber + 1 <= target) {
+                score = score + randomNumber + 1;
+                if (score == target) {
+                    flag = true;
+                    setTimeout(() => {
+                        showModal();
+                    }, 1000); 
+                    scoreDisplay.textContent = `Score: ${score}/${month}`;
+                    return;
+
+                }
+            }
+            scoreDisplay.textContent = `Score: ${score}/${month}`;
+        });
+
+        downloadButton.addEventListener('click', () => {
+            // Replace 'your_download_link_here' with the actual download link
+            const downloadLink = 'https://drive.google.com/file/d/14kvhMYXeA3DBFZftD_Nwa05y5mUxofeH/view?usp=sharing';
+            const a = document.createElement('a');
+            a.href = downloadLink;
+            a.download = 'data.zip'; // Set the desired file name
+            a.click();
+            closeModal();
+        });
+
+        function showModal() {
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
